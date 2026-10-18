@@ -1,14 +1,14 @@
 # Convert Universe
 
-Dosya, klasör ve toplu dönüşüm işlemleri için Türkçe web uygulaması. Dosyaları kuyruğa ekleyin, her biri için çıktı formatını seçin ve sonuçları tek tek veya ZIP olarak indirin.
+Bilgisayarınızda çalışan, tarayıcı arayüzüne sahip Türkçe dosya dönüştürücü. Dosyaları kuyruğa ekleyin, her biri için çıktı formatını seçin ve sonuçları tek tek veya ZIP olarak indirin.
 
-Convert Universe iki şekilde çalışır: GitHub Pages üzerinde sunucusuz **tarayıcı modu**, daha geniş format desteği için Python tabanlı **yerel sunucu modu**. Her iki modda da dönüşüm dosyaları üçüncü taraf bir dönüşüm servisine gönderilmez.
+Python sunucusunu başlatın ve uygulamayı localhost üzerinden açın. Görsel, video, ses, ofis belgesi ve veri dönüşümleri yerel motorlarla bilgisayarınızda işlenir; dosyalar üçüncü taraf bir dönüşüm servisine gönderilmez.
 
 <p align="center">
   <img src="docs/screenshots/workspace.png" alt="Convert Universe koyu temalı çalışma alanı" width="560">
 </p>
 
-[Özellikler](#özellikler) · [Kurulum](#kurulum) · [Desteklenen formatlar](#desteklenen-formatlar) · [GitHub Pages](#github-pages-ile-yayınlama) · [Testler](#testler)
+[Özellikler](#özellikler) · [Kurulum](#kurulum) · [Desteklenen formatlar](#desteklenen-formatlar) · [Testler](#testler)
 
 ## Özellikler
 
@@ -39,36 +39,13 @@ Tekli ve toplu indirme işlemleri onay gerektirir. Vazgeçmek veya pencereyi kap
 
 ![Dosya sayısı ve toplam boyut gösteren indirme onayı](docs/screenshots/download-confirmation.png)
 
-## Çalışma modları
+## Nasıl çalışır?
 
-| | Tarayıcı modu | Yerel sunucu modu |
-| --- | --- | --- |
-| Çalışma ortamı | Statik web sunucusu veya GitHub Pages | Python HTTP sunucusu |
-| Dönüşüm motoru | Canvas ve JavaScript | Pillow, FFmpeg, LibreOffice ve Python |
-| Görseller | PNG, JPG, WebP çıktıları | Ek olarak TIFF, BMP, GIF, ICO ve PDF |
-| Veri | JSON, CSV, TSV | JSON, CSV, TSV |
-| Video ve ses | Desteklenmez | FFmpeg ile desteklenir |
-| Ofis belgeleri | Desteklenmez | LibreOffice ile desteklenir |
-| İşleme sırası | Tek seferde bir dosya | Tek yükleme, en fazla iki sunucu işi |
-| Dosyaların işlendiği yer | Tarayıcı belleği | Yerel bilgisayarın geçici dizini |
+Tarayıcı arayüzü, aynı bilgisayarda çalışan Python sunucusuna bağlanır. Sunucu görseller için Pillow, video ve ses için FFmpeg, ofis belgeleri için LibreOffice kullanır. JSON, CSV ve TSV dönüşümleri Python ile işlenir.
 
-Uygulama, localhost üzerinde yerel API'yi bulursa sunucu modunu kullanır. API yoksa tarayıcı moduna geçer. GitHub Pages üzerinde yerel API aranmaz. Kullanılabilir hedefler arayüzdeki **Desteklenen formatlar** bölümünde listelenir.
+Dosyalar işlenmek üzere yerel geçici dizine alınır. Arayüz aynı anda tek dosya yükler ve en fazla iki sunucu işini yürütür. Kullanılabilir hedefler **Desteklenen formatlar** bölümünde gösterilir.
 
 ## Kurulum
-
-### Tarayıcı modu
-
-Derleme veya JavaScript bağımlılığı kurulumu gerektirmez. `web/` klasörü statik olarak sunulabilir.
-
-Proje kökünde:
-
-```bash
-python3 -m http.server 8766 --bind 127.0.0.1
-```
-
-[http://127.0.0.1:8766/web/](http://127.0.0.1:8766/web/) adresini açın. Python burada yalnızca statik dosyaları sunar; dönüşümler tarayıcıda yapılır. Güncel bir tarayıcı kullanılması önerilir. Klasör seçimi desteği tarayıcıya göre değişebilir.
-
-### Yerel sunucu modu
 
 Gereksinimler:
 
@@ -113,7 +90,7 @@ FFmpeg veya LibreOffice kurulu değilse ilgili dönüşümler sunucu tarafından
 
 ### Kuyruk ve indirme kuralları
 
-- Çok sayıda dosya seçmek aynı anda çok sayıda yükleme başlatmaz. Yerel modda yeni yüklemeler, sunucudaki iki iş sınırına göre bekletilir.
+- Çok sayıda dosya seçmek aynı anda çok sayıda yükleme başlatmaz. Yeni yüklemeler, sunucudaki iki iş sınırına göre bekletilir.
 - **Tümünü indir** yalnızca kuyruktaki her dosya başarıyla tamamlandığında etkinleşir. Hatalı, iptal edilmiş veya desteklenmeyen dosyalar yeniden işlenmeli ya da listeden kaldırılmalıdır.
 - **Vazgeç**, Escape veya indirme penceresini kapatma bekleyen indirme isteğini temizler. Dönüştürülmüş çıktı kuyrukta kalır; yeniden indirmek yeni bir onay gerektirir.
 - **Tamamlananları temizle**, başarılı, iptal edilmiş ve desteklenmeyen satırları kaldırır. **Tümünü temizle**, çalışan kuyruğu durdurduktan sonra bütün satırları kaldırır. Kaynak dosyalar silinmez.
@@ -121,17 +98,6 @@ FFmpeg veya LibreOffice kurulu değilse ilgili dönüşümler sunucu tarafından
 - Sayfa yenilendiğinde veya kapatıldığında istemci kuyruğu kaybolur.
 
 ## Desteklenen formatlar
-
-### Tarayıcı modu
-
-| Kategori | Girdi | Çıktı |
-| --- | --- | --- |
-| Görsel | PNG, JPG, JPEG, WebP, GIF, BMP | PNG, JPG, WebP |
-| Veri | JSON, CSV, TSV | JSON, CSV, TSV |
-
-WebP çıktısı yalnızca tarayıcı kodlamayı destekliyorsa gösterilir. Görsel dönüşümü animasyonu korumaz; tek kare üretir. JPG çıktısında şeffaf alanlar beyazla doldurulur. Görsel metadata/EXIF bilgileri korunmaz.
-
-### Yerel sunucu modu
 
 | Kategori | Girdi | Çıktı |
 | --- | --- | --- |
@@ -145,40 +111,20 @@ WebP çıktısı yalnızca tarayıcı kodlamayı destekliyorsa gösterilir. Gör
 
 Codec ve format desteği kurulu motorlara bağlıdır; her girdi/çıktı birleşimi garanti edilmez. CSV girdileri veri dönüştürücüsüyle işlenir. JSON girdisi nesnelerden oluşan bir dizi olmalıdır. CSV/TSV verileri UTF-8 olarak okunur ve metin değerleri korunur.
 
-## GitHub Pages ile yayınlama
-
-Projedeki [Pages iş akışı](.github/workflows/pages.yml), `web/` klasörünü yayınlar. Python sunucusu, testler ve ekran görüntüleri Pages dağıtımına dahil edilmez; ekran görüntüleri repository README'sinde gösterilir.
-
-1. `midvella` hesabında `Convert-Universe` adlı bir repository oluşturun.
-2. Proje dosyalarını `.github/workflows/pages.yml` dahil repository köküne ekleyin. Klasör yapısını koruyun.
-3. Repository ayarlarında **Settings > Pages > Build and deployment > Source** alanını **GitHub Actions** olarak seçin.
-4. `main` veya `master` dalına push yapın. Alternatif olarak **Actions > Publish Convert Universe to GitHub Pages > Run workflow** üzerinden iş akışını başlatın.
-5. İş akışı başarılı olduğunda Pages bölümündeki yayın adresini açın.
-
-Bu repository adı için beklenen adres:
-
-```text
-https://midvella.github.io/Convert-Universe/
-```
-
-Adres, Pages dağıtımı tamamlandıktan sonra kullanılabilir. Başka bir repository adı kullanılırsa URL yolu da değişir. `midvella.github.io` adlı repository ile kök alan adına yayın yapılabilir; uygulamanın göreli dosya yolları her iki yapıyı da destekler.
-
-İş akışı yayınlamadan önce JavaScript sözdizimini ve tarayıcı/kuyruk testlerini kontrol eder. GitHub Pages sürümünde video, ses ve ofis dönüşümleri çalışmaz; bu işlemler için yerel sunucu kullanılmalıdır.
-
 ## Sınırlar ve veri saklama
 
-| Sınır | Tarayıcı modu | Yerel sunucu modu |
-| --- | --- | --- |
-| Görsel dosyası | 50 MB; çözümlenen görsel en fazla 32 megapiksel | Dosya başına 512 MB |
-| Veri dosyası | 20 MB | Dosya başına 512 MB |
-| Diğer dosyalar | Desteklenmez | Dosya başına 512 MB |
-| Arayüzden ZIP indirme | Toplam 256 MB çıktı | Toplam 256 MB çıktı |
-| Motor zaman aşımı | Sabit süre sınırı yok | FFmpeg/LibreOffice için 300 saniye |
+| Sınır | Değer |
+| --- | --- |
+| Dosya boyutu | Dosya başına 512 MB |
+| Eşzamanlı yükleme | 1 dosya |
+| Eşzamanlı dönüşüm | En fazla 2 sunucu işi |
+| Arayüzden ZIP indirme | Toplam 256 MB çıktı |
+| Motor zaman aşımı | FFmpeg/LibreOffice için 300 saniye |
 
 - ZIP çıktıları sıkıştırmadan paketlenir. Boyut sınırlarının altında da cihaz belleğine bağlı hatalar oluşabilir.
 - PDF girdi dönüşümü, OCR, CAD ve arşiv açma desteklenmez. Şifreli veya bozuk dosyalar hata verebilir.
 - Görsellerde çok sayfalılık ve animasyon korunmaz. Ofis dönüşümlerinde font ve sayfa düzeni değişebilir.
-- Yerel modda iptal, çalışan FFmpeg/LibreOffice süreçlerini sonlandırır. Başlamış Pillow veya tarayıcı görsel işlemi tamamlanabilir; iptal edilen sonuç kullanılmaz. Devam eden yüklemenin iptali, sunucudan iş kimliği alındıktan sonra tamamlanır.
+- İptal, çalışan FFmpeg/LibreOffice süreçlerini sonlandırır. Başlamış Pillow işlemi tamamlanabilir; iptal edilen sonuç kullanılmaz. Devam eden yüklemenin iptali, sunucudan iş kimliği alındıktan sonra tamamlanır.
 - Yerel dosyalar işletim sisteminin geçici dizininde tutulur. Normal sunucu kapanışında silinir; zorla sonlandırmadan sonra diskte kalabilir. Kuyruktan satır kaldırmak yerel geçici dosyayı hemen silmez.
 - Sunucu `127.0.0.1` üzerinde kişisel kullanım için tasarlanmıştır. Kimlik doğrulama, disk kotası ve çok kullanıcılı izolasyon içermez; doğrudan internete açık bir dönüşüm servisi olarak dağıtılmamalıdır.
 - Web fontları Google Fonts üzerinden alınır. İnternet erişimi yoksa sistem fontları kullanılır; dönüşüm dosyaları bu servise gönderilmez.
@@ -187,7 +133,6 @@ Adres, Pages dağıtımı tamamlandıktan sonra kullanılabilir. Başka bir repo
 
 ```text
 Convert-Universe/
-├── .github/workflows/pages.yml   # GitHub Pages doğrulama ve yayın akışı
 ├── docs/screenshots/            # README ekran görüntüleri
 ├── tests/
 │   ├── browser-engine.test.cjs  # Veri dönüşümü ve ZIP testleri
@@ -198,8 +143,7 @@ Convert-Universe/
 │   ├── style.css               # Koyu tema ve duyarlı yerleşim
 │   ├── app.js                  # Kuyruk ve kullanıcı etkileşimleri
 │   ├── browser-engine.js       # Tarayıcı dönüşümleri ve ZIP üretimi
-│   ├── logo.svg
-│   └── .nojekyll
+│   └── logo.svg
 ├── requirements.txt
 └── server.py                   # Yerel API ve dönüşüm işçileri
 ```
@@ -225,8 +169,6 @@ Testler; CSV/TSV tırnak ve satır sonlarını, Türkçe karakterleri, geçersiz
 
 ## Katkıda bulunma
 
-Hata bildirirken çalışma modunu, tarayıcı/işletim sistemi bilgisini, girdi ve hedef formatı, yaklaşık dosya boyutunu ve görünen hata mesajını ekleyin. Sorunu yeniden üretmek için kişisel veri içermeyen küçük bir örnek tercih edin.
+Hata bildirirken tarayıcı/işletim sistemi bilgisini, girdi ve hedef formatı, yaklaşık dosya boyutunu ve görünen hata mesajını ekleyin. Sorunu yeniden üretmek için kişisel veri içermeyen küçük bir örnek tercih edin.
 
-Değişikliklerde tarayıcı ve yerel sunucu modlarını birlikte değerlendirin. Yeni bir format eklerken motor desteğini, arayüzde gösterilen hedefleri ve ilgili testleri güncelleyin.
-
-Proje hesabı: [midvella](https://github.com/midvella)
+Değişikliklerde web arayüzünü ve yerel API akışını birlikte doğrulayın. Yeni bir format eklerken motor desteğini, arayüzde gösterilen hedefleri ve ilgili testleri güncelleyin.
