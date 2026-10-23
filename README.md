@@ -172,3 +172,5 @@ Testler; CSV/TSV tırnak ve satır sonlarını, Türkçe karakterleri, geçersiz
 Hata bildirirken tarayıcı/işletim sistemi bilgisini, girdi ve hedef formatı, yaklaşık dosya boyutunu ve görünen hata mesajını ekleyin. Sorunu yeniden üretmek için kişisel veri içermeyen küçük bir örnek tercih edin.
 
 Değişikliklerde web arayüzünü ve yerel API akışını birlikte doğrulayın. Yeni bir format eklerken motor desteğini, arayüzde gösterilen hedefleri ve ilgili testleri güncelleyin.
+
+[Lisans](LICENSE.md)
