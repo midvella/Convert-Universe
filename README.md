@@ -173,4 +173,4 @@ Hata bildirirken tarayıcı/işletim sistemi bilgisini, girdi ve hedef formatı,
 
 Değişikliklerde web arayüzünü ve yerel API akışını birlikte doğrulayın. Yeni bir format eklerken motor desteğini, arayüzde gösterilen hedefleri ve ilgili testleri güncelleyin.
 
-[Lisans](LICENSE.md)
+[Lisans](LICENSE)
